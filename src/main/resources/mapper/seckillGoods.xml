@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+     <mapper namespace="com.ec.concurrency.dao.SeckillGoodsDao">
+    <select id="findSeckillGoodsForOpen" resultType="com.ec.concurrency.entity.SeckillGoods">
+      select * from f3469.seckill_goods where status = '0' and now() between start_time and end_time
+    </select>
+    <select id="findSeckillGoodsForClose" resultType="com.ec.concurrency.entity.SeckillGoods">
+      select * from f3469.seckill_goods where status = '1' and not now() between start_time and end_time
+    </select>
+    <select id="findById" parameterType="long" resultType="com.ec.concurrency.entity.SeckillGoods">
+      select * from f3469.seckill_goods where good_id = #{value}
+    </select>
+    <update id="update" parameterType="com.ec.concurrency.entity.Product">
+    	UPDATE f3469.seckill_goods
+			SET status=#{status}, count=#{count}
+			WHERE good_id= #{goodId}
+    	
+    </update>
+  </mapper>
